@@ -1,0 +1,71 @@
+
+ul.user-info {
+    list-style-type: none;
+    width: 300px;
+    padding: 0;
+}
+
+.user-info li {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+ul.glitter {
+    list-style-type: none;
+}
+
+.glitter li img {
+    float: left;
+    margin: 0 15px 0 0;
+}
+
+.glitter li {
+    padding: 10px;
+    overflow: auto;
+}
+
+.glitter li:hover {
+    background: #eee;
+}
+
+.avatar {
+    float: left;
+    margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    background-repeat: no-repeat;
+}
+
+.avatar-small {
+    float: left;
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    background-size : 100% auto
+
+}
+
+.media {
+    background-color: lightblue;
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.followers {
+    list-style-type: none;
+}
+
+.followers > li {
+    display: inline-block;
+}

@@ -23,7 +23,7 @@ class HashtagController extends Controller
 	 */
 	public function index()
 	{
-        $hashtags = Hashtag::all();
+        $hashtags = Hashtag::all()->groupBy('name');
 
         return view('hashtag', ['hashtags' => $hashtags]);
 	}
@@ -39,6 +39,6 @@ class HashtagController extends Controller
     {
         $hashtags = Hashtag::all()->where('name', strtolower($hashtag));
 
-        return view('hashtag', ['hashtags' => $hashtags]);
+        return view('hashtag-single', ['hashtags' => $hashtags, 'name' => strtolower($hashtag)]);
     }
 }

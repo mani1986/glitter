@@ -5,6 +5,7 @@
             @include('widget-user-info')
         </div>
         <div class="col-xs-12 col-md-6">
+            <h2>Following {{'@' . $user->username}}</h2>
             <ul class="followers">
             @foreach ($user->followers as $follow)
                 <li>

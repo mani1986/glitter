@@ -1,11 +1,13 @@
 @extends('app')
 @section('content')
     <div class="row">
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+        </div>
         <div class="col-md-6">
+            <h2>Latest glitters</h2>
             <ul class="glitter">
-                @foreach ($hashtags as $name => $value)
-                    <li><a href="/h/{{$name}}">{{'#' . $name}}</a> - {{count($value)}} glitters</li>
+                @foreach ($glitters as $glitter)
+                    @include('glitter-single')
                 @endforeach
             </ul>
         </div>

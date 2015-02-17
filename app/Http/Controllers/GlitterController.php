@@ -19,6 +19,18 @@ use Illuminate\Support\Facades\Redirect;
 class GlitterController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $glitters = Glitter::orderBy('id', 'DESC')->take(100)->get();
+
+        return view('glitter', ['glitters' => $glitters]);
+    }
+
+    /**
      * Store all hashtags in a string.
      *
      * @param         $content
@@ -76,7 +88,7 @@ class GlitterController extends Controller
 	 */
 	public function store(Request $request)
 	{
-        $glitter          = new Glitter();
+        $glitter = new Glitter();
         $glitter->content = $request->input('content');
         $glitter->user = Auth::id();
         $glitter->save();

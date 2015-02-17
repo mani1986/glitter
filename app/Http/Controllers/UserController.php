@@ -1,5 +1,4 @@
-<?php
-namespace Glitter\Http\Controllers;
+<?php namespace Glitter\Http\Controllers;
 
 use Glitter\Follow;
 use Glitter\Http\Requests;

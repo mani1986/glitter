@@ -7,6 +7,7 @@ use Glitter\Http\Requests;
 use Glitter\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class HashtagController
@@ -24,6 +25,8 @@ class HashtagController extends Controller
 	public function index()
 	{
         $hashtags = Hashtag::all()->groupBy('name');
+
+        var_dump(Redis::get('hashtag:*'));
 
         return view('hashtag', ['hashtags' => $hashtags]);
 	}

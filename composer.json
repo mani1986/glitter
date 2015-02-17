@@ -3,7 +3,8 @@
 	"description": "Something like Twitter(r)",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.0.*"
+		"laravel/framework": "5.0.*",
+        "predis/predis": "~1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

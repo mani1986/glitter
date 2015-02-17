@@ -11,13 +11,13 @@
             {{'@' . $user->username}}
         </li>
         <li>
-            Following: <a href="/u/{{$user->username}}/following">{{count($user->following)}}</a>
+            Following: <a href="/u/{{$user->username}}/following">{{$user->getNumberOfFollowing()}}</a>
         </li>
         <li>
-            Followers: <a href="/u/{{$user->username}}/followers">{{count($user->followers)}}</a>
+            Followers: <a href="/u/{{$user->username}}/followers">{{$user->getNumberOfFollowers()}}</a>
         </li>
         <li>
-            Glitters: {{count($user->glitters)}}
+            Glitters: {{$user->getNumberOfGlitters()}}
         </li>
         @if (!Auth::guest() && $user->id != Auth::id())
             <li>

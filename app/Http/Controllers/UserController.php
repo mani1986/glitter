@@ -5,6 +5,7 @@ use Glitter\Http\Requests;
 use Glitter\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class UserController
@@ -70,6 +71,9 @@ class UserController extends Controller
             $follow->user_from = Auth::id();
             $follow->user_to = $user->id;
             $follow->save();
+
+            Redis::set($user->getRedisKeyFollowers(), count($user->followers));
+            Redis::set(Auth::user()->getRedisKeyFollowing(), count(Auth::user()->following));
         }
 
         return Redirect::back();
@@ -85,6 +89,9 @@ class UserController extends Controller
 
         if ($follow) {
             Follow::destroy($follow[0]->id);
+
+            Redis::set($user->getRedisKeyFollowers(), count($user->followers));
+            Redis::set(Auth::user()->getRedisKeyFollowing(), count(Auth::user()->following));
         }
 
         return Redirect::back();

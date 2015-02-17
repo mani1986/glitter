@@ -10,6 +10,7 @@ use Glitter\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class GlitterController
@@ -46,6 +47,14 @@ class GlitterController extends Controller
             $hashtag->glitter = $glitter->id;
             $hashtag->name = strtolower($hashtags[$i]);
             $hashtag->save();
+
+            $hits = Redis::get($hashtag->getRedisKeyGlitters());
+
+            if ($hits) {
+                Redis::set($hashtag->getRedisKeyGlitters(), ++$hits);
+            } else {
+                Redis::set($hashtag->getRedisKeyGlitters(), 1);
+            }
         }
     }
 
@@ -67,6 +76,7 @@ class GlitterController extends Controller
         $glitter->save();
 
         $this->storeHashtags($glitter->content, $glitter);
+        Redis::set(Auth::user()->getRedisKeyGlitters(), count(Auth::user()->glitters));
 
         return Redirect::back();
     }
@@ -94,6 +104,7 @@ class GlitterController extends Controller
         $glitter->save();
 
         $this->storeHashtags($glitter->content, $glitter);
+        Redis::set(Auth::user()->getRedisKeyGlitters(), count(Auth::user()->glitters));
 
         return Redirect::back();
 	}

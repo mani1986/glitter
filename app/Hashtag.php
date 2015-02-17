@@ -25,4 +25,9 @@ class Hashtag extends Model
 
         return $this->name;
     }
+
+    public function getRedisKeyGlitters()
+    {
+        return 'hashtag:' . $this->name . ':glitters';
+    }
 }

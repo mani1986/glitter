@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class User
@@ -118,5 +119,35 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                    ->get();
 
         return $follow;
+    }
+
+    public function getNumberOfFollowers()
+    {
+        return Redis::get($this->getRedisKeyFollowers()) ? Redis::get($this->getRedisKeyFollowers()) : 0;
+    }
+
+    public function getNumberOfFollowing()
+    {
+        return Redis::get($this->getRedisKeyFollowing()) ? Redis::get($this->getRedisKeyFollowing()) : 0;
+    }
+
+    public function getNumberOfGlitters()
+    {
+        return Redis::get($this->getRedisKeyGlitters()) ? Redis::get($this->getRedisKeyGlitters()) : 0;
+    }
+
+    public function getRedisKeyFollowing()
+    {
+        return 'user:' . $this->id . ':following';
+    }
+
+    public function getRedisKeyFollowers()
+    {
+        return 'user:' . $this->id . ':followers';
+    }
+
+    public function getRedisKeyGlitters()
+    {
+        return 'user:' . $this->id . ':glitters';
     }
 }

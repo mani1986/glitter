@@ -32,7 +32,7 @@ class GlitterController extends Controller
         for ($i = 0; $i < count($hashtags); $i++) {
             $hashtag = new Hashtag();
             $hashtag->glitter = $glitter->id;
-            $hashtag->name = $hashtags[$i];
+            $hashtag->name = strtolower($hashtags[$i]);
             $hashtag->save();
         }
     }

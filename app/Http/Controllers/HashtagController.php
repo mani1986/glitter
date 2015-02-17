@@ -37,7 +37,7 @@ class HashtagController extends Controller
      */
     public function getByHashtag($hashtag)
     {
-        $hashtags = Hashtag::all()->where('name', $hashtag);
+        $hashtags = Hashtag::all()->where('name', strtolower($hashtag));
 
         return view('hashtag', ['hashtags' => $hashtags]);
     }

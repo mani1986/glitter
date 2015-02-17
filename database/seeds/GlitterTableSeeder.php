@@ -19,7 +19,23 @@ class GlitterTableSeeder extends Seeder
             for ($i = 0; $i < rand(4, 50); $i++) {
                 Glitter::create([
                     'user' => $user->id,
-                    'content' => MockUserData::getRandomSentence()
+                    'content' => MockUserData::getRandomSentence(),
+                    'created_at' => MockUserData::getRandomDate()
+                ]);
+            }
+        }
+
+        $users = \Glitter\User::all();
+
+        foreach ($users as $user) {
+            for ($i = 0; $i < rand(2, 30); $i++) {
+                $reglitter = Glitter::orderByRaw("RAND()")->first();
+
+                Glitter::create([
+                    'user' => $user->id,
+                    'content' => $reglitter->content,
+                    'reglitter' => $reglitter->id,
+                    'created_at' => MockUserData::getRandomDate()
                 ]);
             }
         }

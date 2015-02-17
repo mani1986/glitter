@@ -22,7 +22,15 @@ class Glitter extends Model
 
     public function getParsedContent()
     {
-        return preg_replace('/#(\w+)/', '<a href="/h/$1">#$1</a>', $this->content);
+        $parsed = preg_replace('/#(\w+)/', '<a href="/h/$1">#$1</a>', $this->content);
+
+        return preg_replace_callback('/@(\w+)/', function($matches) {
+            if (Redis::get($matches[1] . ':exists')) {
+                return '<a href="/u/' . $matches[1] . '">@' . $matches[1] . '</a>';
+            } else {
+                return '@' . $matches[1];
+            }
+        }, $parsed);
     }
 
     public function reglitter_link()
@@ -37,6 +45,14 @@ class Glitter extends Model
         self::storeHashtags($glitter);
 
         Redis::set($glitter->author->getRedisKeyGlitterCount(), count($glitter->author->glitters));
+    }
+
+    public function save(array $data = [])
+    {
+        parent::save();
+        self::storeHashtags($this);
+
+        Redis::set($this->author->getRedisKeyGlitterCount(), count($this->author->glitters));
     }
 
     /**

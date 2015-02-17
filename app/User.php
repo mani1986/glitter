@@ -55,6 +55,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $ids;
     }
 
+    public static function create(array $data)
+    {
+        $user = parent::create($data);
+        Redis::set($user->username . ':exists', true);
+    }
+
     /**
      * Get all glitters in the users feed.
      */
@@ -70,7 +76,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function glitters()
     {
-        return $this->hasMany('Glitter\Glitter', 'user')->orderBy('id', 'DESC');
+        return $this->hasMany('Glitter\Glitter', 'user')->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -78,7 +84,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function followers()
     {
-        return $this->hasMany('Glitter\Follow', 'user_to')->orderBy('id', 'DESC');
+        return $this->hasMany('Glitter\Follow', 'user_to')->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -86,7 +92,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function following()
     {
-        return $this->hasMany('Glitter\Follow', 'user_from')->orderBy('id', 'DESC');
+        return $this->hasMany('Glitter\Follow', 'user_from')->orderBy('created_at', 'DESC');
     }
 
     /**

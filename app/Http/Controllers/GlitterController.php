@@ -26,7 +26,7 @@ class GlitterController extends Controller
      */
     public function index()
     {
-        $glitters = Glitter::orderBy('id', 'DESC')->take(100)->get();
+        $glitters = Glitter::orderBy('created_at', 'DESC')->take(50)->get();
 
         return view('glitter', ['glitters' => $glitters]);
     }
@@ -42,11 +42,11 @@ class GlitterController extends Controller
             return redirect('/');
         }
 
-        Glitter::create([
-            'reglitter' => $id,
-            'content' => $parentGlitter->content,
-            'user' => Auth::id()
-        ]);
+        $glitter = new Glitter();
+        $glitter->content = $parentGlitter->content;
+        $glitter->reglitter = $id;
+        $glitter->user = Auth::id();
+        $glitter->save();
 
         return Redirect::back();
     }
@@ -68,13 +68,10 @@ class GlitterController extends Controller
 	 */
 	public function store(Request $request)
 	{
-        Glitter::create([
-            'content' => $request->input('content'),
-            'user' => Auth::id()
-        ]);
-
-        $this->storeHashtags($glitter->content, $glitter);
-        Redis::set(Auth::user()->getRedisKeyGlitterCount(), count(Auth::user()->glitters));
+        $glitter = new Glitter();
+        $glitter->content = $request->input('content');
+        $glitter->user = Auth::id();
+        $glitter->save();
 
         return Redirect::back();
 	}

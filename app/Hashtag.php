@@ -24,12 +24,8 @@ class Hashtag extends Model
         return $this->belongsTo('Glitter\Glitter', 'glitter');
     }
 
-    public function __toString()
+    public function scopeHashtag($query, $name)
     {
-        if(is_null($this->name)) {
-            return 'NULL';
-        }
-
-        return $this->name;
+        return $query->where('name', $name);
     }
 }

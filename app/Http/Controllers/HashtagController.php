@@ -32,7 +32,6 @@ class HashtagController extends Controller
             $hashtags[$hashtag] = Redis::get(self::getRedisKeyGlitters($hashtag));
         }
 
-//        $hashtags = Hashtag::all()->groupBy('name')->take(20);
         return view('hashtag', ['hashtags' => $hashtags]);
 	}
 
@@ -45,7 +44,7 @@ class HashtagController extends Controller
      */
     public function getByHashtag($hashtag)
     {
-        $hashtags = Hashtag::all()->where('name', strtolower($hashtag));
+        $hashtags = Hashtag::hashtag($hashtag)->orderBy('id', 'DESC')->get();
 
         return view('hashtag-single', ['hashtags' => $hashtags, 'name' => strtolower($hashtag)]);
     }

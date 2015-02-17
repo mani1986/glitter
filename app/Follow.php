@@ -40,7 +40,8 @@ class Follow extends Model
 
     public static function destroy($ids)
     {
-        $follow = parent::create(ids);
+        $follow = Follow::find($ids);
+        parent::destroy($ids);
 
         Redis::set($follow->follows->getRedisKeyFollowers(), count($follow->follows->followers));
         Redis::set($follow->follower->getRedisKeyFollowing(), count($follow->follower->following));

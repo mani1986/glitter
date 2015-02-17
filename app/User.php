@@ -146,8 +146,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return 'user:' . $this->id . ':followers';
     }
 
-    public function getRedisKeyGlitters()
+    public function getRedisKeyGlitterCount()
     {
-        return 'user:' . $this->id . ':glitters';
+        return 'user:' . $this->id . ':glitter:count';
+    }
+
+    public function getRedisKeyGlitterLatest()
+    {
+        return 'user:' . $this->id . ':glitter:latest';
     }
 }

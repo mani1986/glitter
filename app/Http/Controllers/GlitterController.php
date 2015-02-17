@@ -42,20 +42,39 @@ class GlitterController extends Controller
         preg_match_all('/#(\w+)/', $content, $matches);
         $hashtags = $matches[1];
 
+        $latestHashtags = json_decode(Redis::get(Hashtag::REDIS_KEY_HASHTAG_LATEST), true);
+
         for ($i = 0; $i < count($hashtags); $i++) {
             $hashtag = new Hashtag();
             $hashtag->glitter = $glitter->id;
             $hashtag->name = strtolower($hashtags[$i]);
             $hashtag->save();
 
-            $hits = Redis::get($hashtag->getRedisKeyGlitters());
+            HashtagController::updateHits($hashtag->name);
 
-            if ($hits) {
-                Redis::set($hashtag->getRedisKeyGlitters(), ++$hits);
-            } else {
-                Redis::set($hashtag->getRedisKeyGlitters(), 1);
-            }
+            $latestHashtags[] = $hashtag->name;
         }
+
+        $this->updateLatestHashtags($latestHashtags);
+    }
+
+    /**
+     * @param array $latestHashtags
+     */
+    private function updateLatestHashtags(array $latestHashtags)
+    {
+        $latestHashtags = array_unique($latestHashtags);
+
+        Redis::set(
+            Hashtag::REDIS_KEY_HASHTAG_LATEST,
+            json_encode(
+                array_slice(
+                    $latestHashtags,
+                    count($latestHashtags) - Hashtag::HASHTAG_LATEST_COUNT,
+                    Hashtag::HASHTAG_LATEST_COUNT
+                )
+            )
+        );
     }
 
     /**

@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Redis;
+use Glitter\Hashtag;
 
 class CreateHashtagsTable extends Migration {
 
@@ -19,6 +21,8 @@ class CreateHashtagsTable extends Migration {
             $table->foreign('glitter')->references('id')->on('glitters');
             $table->timestamps();
         });
+
+        Redis::set(Hashtag::REDIS_KEY_HASHTAG_LATEST, json_encode([]));
 	}
 
 	/**

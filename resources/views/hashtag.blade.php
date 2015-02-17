@@ -4,8 +4,8 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <ul class="glitter">
-                @foreach ($hashtags as $name => $value)
-                    <li><a href="/h/{{$name}}">{{'#' . $name}}</a> - {{count($value)}} glitters</li>
+                @foreach ($hashtags as $name => $hits)
+                    <li><a href="/h/{{$name}}">{{'#' . $name}}</a> - {{$hits}} glitters</li>
                 @endforeach
             </ul>
         </div>

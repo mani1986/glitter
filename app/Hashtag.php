@@ -2,6 +2,7 @@
 namespace Glitter;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class Hashtag
@@ -10,6 +11,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Hashtag extends Model
 {
+    /**
+     * Constants.
+     */
+    const REDIS_KEY_HASHTAG_LATEST = 'hashtag:latest';
+    const HASHTAG_LATEST_COUNT = 20;
+
     protected $fillable = ['name', 'glitter'];
 
     public function linked_glitter()
@@ -24,10 +31,5 @@ class Hashtag extends Model
         }
 
         return $this->name;
-    }
-
-    public function getRedisKeyGlitters()
-    {
-        return 'hashtag:' . $this->name . ':glitters';
     }
 }

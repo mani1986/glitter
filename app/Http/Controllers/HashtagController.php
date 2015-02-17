@@ -24,10 +24,15 @@ class HashtagController extends Controller
 	 */
 	public function index()
 	{
-        $hashtags = Hashtag::all()->groupBy('name');
+        $hashtags = [];
 
-        var_dump(Redis::get('hashtag:*'));
+        $latestHashtags = json_decode(Redis::get(Hashtag::REDIS_KEY_HASHTAG_LATEST), true);
 
+        foreach ($latestHashtags as $hashtag) {
+            $hashtags[$hashtag] = Redis::get(self::getRedisKeyGlitters($hashtag));
+        }
+
+//        $hashtags = Hashtag::all()->groupBy('name')->take(20);
         return view('hashtag', ['hashtags' => $hashtags]);
 	}
 
@@ -43,5 +48,27 @@ class HashtagController extends Controller
         $hashtags = Hashtag::all()->where('name', strtolower($hashtag));
 
         return view('hashtag-single', ['hashtags' => $hashtags, 'name' => strtolower($hashtag)]);
+    }
+
+    /**
+     * Get the redis key for number of glitters on a hashtag.
+     */
+    public static function getRedisKeyGlitters($name)
+    {
+        return 'hashtag:' . $name . ':glitters';
+    }
+
+    /**
+     * Update hits per hashtag in redis.
+     */
+    public static function updateHits($name)
+    {
+        $hits = Redis::get(self::getRedisKeyGlitters($name));
+
+        if ($hits) {
+            Redis::set(self::getRedisKeyGlitters($name), ++$hits);
+        } else {
+            Redis::set(self::getRedisKeyGlitters($name), 1);
+        }
     }
 }

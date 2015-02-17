@@ -16,7 +16,7 @@ class FollowTableSeeder extends Seeder
         $users = \Glitter\User::all();
 
         foreach ($users as $user) {
-            for ($i = 0; $i < rand(1, count($users)); $i++) {
+            for ($i = 0; $i < rand(1, count($users) / 5); $i++) {
                 Follow::create([
                     'user_from' => $user->id,
                     'user_to' => rand(1, count($users))

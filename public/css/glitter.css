@@ -1,8 +1,9 @@
 
 ul.user-info {
     list-style-type: none;
-    width: 300px;
+    width: 250px;
     padding: 0;
+    margin: 10px;
 }
 
 .user-info li {
@@ -30,7 +31,7 @@ ul.glitter {
 
 .avatar {
     float: left;
-    margin-right: 10px;
+    margin: 10px;
     width: 100px;
     height: 100px;
     border-radius: 150px;
@@ -56,7 +57,8 @@ ul.glitter {
 .media {
     background-color: lightblue;
     border-radius: 10px;
-    padding: 10px;
+    padding: 0;
+    padding-bottom: 0px;
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
@@ -68,4 +70,42 @@ ul.glitter {
 
 .followers > li {
     display: inline-block;
+    width: 350px;
+}
+
+.user-table {
+    display: table;
+    margin: 0 auto;
+    width: 100%;
+    background-color: lightsteelblue;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 0;
+}
+
+.user-statistics {
+    display: block;
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+.user-statistics > li {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-statistics .title {
+    display: block;
+    font-weight: 500;
+}
+
+.user-statistics span {
+    font-size: 16px;
+    display: table;
+    margin: 0 auto;
+}
+
+.btn-follow, .btn-unfollow {
+    margin-top: 10px
 }

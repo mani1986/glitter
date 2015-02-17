@@ -69,7 +69,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function glitters()
     {
-        return $this->hasMany('Glitter\Glitter', 'user');
+        return $this->hasMany('Glitter\Glitter', 'user')->orderBy('id', 'DESC');
     }
 
     /**

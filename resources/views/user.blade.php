@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-6">
             <ul class="glitter">
-            @foreach ($user->feed as $glitter)
+            @foreach ($user->glitters as $glitter)
                 @include('glitter-single')
             @endforeach
             </ul>

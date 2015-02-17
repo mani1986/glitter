@@ -8,7 +8,7 @@
                 {{$user->name}}
             </li>
             <li>
-                {{'@' . $user->username}}
+                <a href="/u/{{$user->username}}">{{'@' . $user->username}}</a>
             </li>
             @if (!Auth::guest() && $user->id != Auth::id())
                 <li>

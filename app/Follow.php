@@ -2,6 +2,9 @@
 namespace Glitter;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Class Follow
@@ -27,4 +30,19 @@ class Follow extends Model
         return $this->belongsTo('Glitter\User', 'user_to');
     }
 
+    public static function create(array $data)
+    {
+        $follow = parent::create($data);
+
+        Redis::set($follow->follows->getRedisKeyFollowers(), count($follow->follows->followers));
+        Redis::set($follow->follower->getRedisKeyFollowing(), count($follow->follower->following));
+    }
+
+    public static function destroy($ids)
+    {
+        $follow = parent::create(ids);
+
+        Redis::set($follow->follows->getRedisKeyFollowers(), count($follow->follows->followers));
+        Redis::set($follow->follower->getRedisKeyFollowing(), count($follow->follower->following));
+    }
 }

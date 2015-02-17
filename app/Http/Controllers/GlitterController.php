@@ -32,52 +32,6 @@ class GlitterController extends Controller
     }
 
     /**
-     * Store all hashtags in a string.
-     *
-     * @param         $content
-     * @param Glitter $glitter
-     */
-    private function storeHashtags($content, Glitter $glitter)
-    {
-        preg_match_all('/#(\w+)/', $content, $matches);
-        $hashtags = $matches[1];
-
-        $latestHashtags = json_decode(Redis::get(Hashtag::REDIS_KEY_HASHTAG_LATEST), true);
-
-        for ($i = 0; $i < count($hashtags); $i++) {
-            $hashtag = new Hashtag();
-            $hashtag->glitter = $glitter->id;
-            $hashtag->name = strtolower($hashtags[$i]);
-            $hashtag->save();
-
-            HashtagController::updateHits($hashtag->name);
-
-            $latestHashtags[] = $hashtag->name;
-        }
-
-        $this->updateLatestHashtags($latestHashtags);
-    }
-
-    /**
-     * @param array $latestHashtags
-     */
-    private function updateLatestHashtags(array $latestHashtags)
-    {
-        $latestHashtags = array_unique($latestHashtags);
-
-        Redis::set(
-            Hashtag::REDIS_KEY_HASHTAG_LATEST,
-            json_encode(
-                array_slice(
-                    $latestHashtags,
-                    count($latestHashtags) - Hashtag::HASHTAG_LATEST_COUNT,
-                    Hashtag::HASHTAG_LATEST_COUNT
-                )
-            )
-        );
-    }
-
-    /**
      * @param $id
      */
     public function reglitter($id)
@@ -88,14 +42,11 @@ class GlitterController extends Controller
             return redirect('/');
         }
 
-        $glitter = new Glitter();
-        $glitter->reglitter = $id;
-        $glitter->content = $parentGlitter->content;
-        $glitter->user = Auth::id();
-        $glitter->save();
-
-        $this->storeHashtags($glitter->content, $glitter);
-        Redis::set(Auth::user()->getRedisKeyGlitterCount(), count(Auth::user()->glitters));
+        Glitter::create([
+            'reglitter' => $id,
+            'content' => $parentGlitter->content,
+            'user' => Auth::id()
+        ]);
 
         return Redirect::back();
     }
@@ -117,10 +68,10 @@ class GlitterController extends Controller
 	 */
 	public function store(Request $request)
 	{
-        $glitter = new Glitter();
-        $glitter->content = $request->input('content');
-        $glitter->user = Auth::id();
-        $glitter->save();
+        Glitter::create([
+            'content' => $request->input('content'),
+            'user' => Auth::id()
+        ]);
 
         $this->storeHashtags($glitter->content, $glitter);
         Redis::set(Auth::user()->getRedisKeyGlitterCount(), count(Auth::user()->glitters));

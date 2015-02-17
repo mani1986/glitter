@@ -1,7 +1,10 @@
 <?php
 namespace Glitter;
 
+use Glitter\Http\Controllers\HashtagController;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class Glitter
@@ -25,5 +28,60 @@ class Glitter extends Model
     public function reglitter_link()
     {
         return $this->belongsTo('Glitter\Glitter', 'reglitter');
+    }
+
+    public static function create(array $data)
+    {
+        $glitter = parent::create($data);
+
+        self::storeHashtags($glitter);
+
+        Redis::set($glitter->author->getRedisKeyGlitterCount(), count($glitter->author->glitters));
+    }
+
+    /**
+     * Store all hashtags in a string.
+     *
+     * @param         $content
+     * @param Glitter $glitter
+     */
+    private static function storeHashtags(Glitter $glitter)
+    {
+        preg_match_all('/#(\w+)/', $glitter->content, $matches);
+        $hashtags = $matches[1];
+
+        $latestHashtags = json_decode(Redis::get(Hashtag::REDIS_KEY_HASHTAG_LATEST), true);
+
+        for ($i = 0; $i < count($hashtags); $i++) {
+            $hashtag = new Hashtag();
+            $hashtag->glitter = $glitter->id;
+            $hashtag->name = strtolower($hashtags[$i]);
+            $hashtag->save();
+
+            HashtagController::updateHits($hashtag->name);
+
+            $latestHashtags[] = $hashtag->name;
+        }
+
+        self::updateLatestHashtags($latestHashtags);
+    }
+
+    /**
+     * @param array $latestHashtags
+     */
+    private static function updateLatestHashtags(array $latestHashtags)
+    {
+        $latestHashtags = array_unique($latestHashtags);
+
+        Redis::set(
+            Hashtag::REDIS_KEY_HASHTAG_LATEST,
+            json_encode(
+                array_slice(
+                    $latestHashtags,
+                    count($latestHashtags) - Hashtag::HASHTAG_LATEST_COUNT,
+                    Hashtag::HASHTAG_LATEST_COUNT
+                )
+            )
+        );
     }
 }

@@ -13,40 +13,15 @@ class GlitterTableSeeder extends Seeder
     }
     private function generate()
     {
-        $glitters = [
-            [
-                'user' => 1,
-                'content' => 'Went to the gym today #yolo#lol'
-            ],
-            [
-                'user' => 1,
-                'content' => 'I love glittering on the internet #glitter#awesome'
-            ],
-            [
-                'user' => 1,
-                'content' => 'Going out tonight yeah #party'
-            ],
-            [
-                'user' => 1,
-                'content' => 'Best day ever, seeya #summer#fun#nothing'
-            ],
-            [
-                'user' => 1,
-                'content' => 'I have nothing to say #nothingtosay'
-            ],
-            [
-                'user' => 2,
-                'content' => 'Never going home #lol'
-            ],
-            [
-                'user' => 3,
-                'content' => 'Never going home #lol',
-                'reglitter' => 6
-            ]
-        ];
+        $users = \Glitter\User::all();
 
-        foreach ($glitters as $glitter) {
-            Glitter::create($glitter);
+        foreach ($users as $user) {
+            for ($i = 0; $i < rand(4, 50); $i++) {
+                Glitter::create([
+                    'user' => $user->id,
+                    'content' => MockUserData::getRandomSentence()
+                ]);
+            }
         }
     }
 } 

@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mani
- * Date: 14/02/15
- * Time: 14:40
- */
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 use Glitter\Hashtag;
 
 class HashtagTableSeeder extends Seeder

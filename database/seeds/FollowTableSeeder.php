@@ -13,27 +13,15 @@ class FollowTableSeeder extends Seeder
     }
     private function generate()
     {
-        $follows = [
-            [
-                'user_from' => 1,
-                'user_to' => 2
-            ],
-            [
-                'user_from' => 1,
-                'user_to' => 3
-            ],
-            [
-                'user_from' => 2,
-                'user_to' => 1
-            ],
-            [
-                'user_from' => 3,
-                'user_to' => 1
-            ]
-        ];
+        $users = \Glitter\User::all();
 
-        foreach ($follows as $follow) {
-            Follow::create($follow);
+        foreach ($users as $user) {
+            for ($i = 0; $i < rand(1, count($users)); $i++) {
+                Follow::create([
+                    'user_from' => $user->id,
+                    'user_to' => rand(1, count($users))
+                ]);
+            }
         }
     }
 } 

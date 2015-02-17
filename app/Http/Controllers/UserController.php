@@ -56,7 +56,11 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->first();
 
-        return view('user', ['user' => $user]);
+        if ($user) {
+            return view('user', ['user' => $user]);
+        } else {
+            return view('error', ['message' => 'User ' . $username . ' was not found.']);
+        }
     }
 
     /**
@@ -67,13 +71,10 @@ class UserController extends Controller
         $user = User::where('username', $username)->first();
 
         if (!$user->getIsBeingFollowed()) {
-            $follow = new Follow();
-            $follow->user_from = Auth::id();
-            $follow->user_to = $user->id;
-            $follow->save();
-
-            Redis::set($user->getRedisKeyFollowers(), count($user->followers));
-            Redis::set(Auth::user()->getRedisKeyFollowing(), count(Auth::user()->following));
+            Follow::create([
+                'user_from' => Auth::id(),
+                'user_to' => $user->id
+            ]);
         }
 
         return Redirect::back();
@@ -89,9 +90,6 @@ class UserController extends Controller
 
         if ($follow) {
             Follow::destroy($follow[0]->id);
-
-            Redis::set($user->getRedisKeyFollowers(), count($user->followers));
-            Redis::set(Auth::user()->getRedisKeyFollowing(), count(Auth::user()->following));
         }
 
         return Redirect::back();

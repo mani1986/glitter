@@ -55,12 +55,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $ids;
     }
 
-    public static function create(array $data)
-    {
-        $user = parent::create($data);
-        Redis::set($user->username . ':exists', true);
-    }
-
     /**
      * Get all glitters in the users feed.
      */

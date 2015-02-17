@@ -1,3 +1,7 @@
+.btn-glitter {
+    width: 180px;
+    height: 90px;
+}
 
 ul.user-info {
     list-style-type: none;
@@ -13,6 +17,8 @@ ul.user-info {
 
 ul.glitter {
     list-style-type: none;
+    width: 100%;
+    float: left;
 }
 
 .glitter li img {

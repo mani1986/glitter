@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <form class="form-inline" method="POST">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="search" placeholder="Search">
+                    <input type="text" class="form-control" name="search" placeholder="Search" required="required" pattern=".{3,}" title="3 characters minimum">
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-default">Search</button>

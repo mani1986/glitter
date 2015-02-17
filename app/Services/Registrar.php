@@ -37,6 +37,8 @@ class Registrar implements RegistrarContract {
             'username' => $data['username'],
             'avatar' => $this->getAvatar()
 		]);
+
+        Redis::set($data['username'] . ':exists', true);
 	}
 
     /**

@@ -16,14 +16,17 @@ class UserTableSeeder extends Seeder
     {
         for ($i = 0; $i < 20; $i++) {
             $name = MockFirstName::getRandom();
+            $username = strtolower(MockUserData::getUsername($name));
 
             User::create([
-                'username' => strtolower(MockUserData::getUsername($name)),
+                'username' => $username,
                 'email' => $name . '@' . MockUserData::getRandomDomain(),
                 'password' => Hash::make('secret'),
                 'name' => $name . ' ' . MockLastName::getRandom(),
                 'avatar' => MockUserData::getRandomAvatar()
             ]);
+
+            \Illuminate\Support\Facades\Redis::set($username . ':exists', true);
         }
     }
 }

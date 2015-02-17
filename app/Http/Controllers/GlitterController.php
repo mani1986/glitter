@@ -95,7 +95,7 @@ class GlitterController extends Controller
         $glitter->save();
 
         $this->storeHashtags($glitter->content, $glitter);
-        Redis::set(Auth::user()->getRedisKeyGlitters(), count(Auth::user()->glitters));
+        Redis::set(Auth::user()->getRedisKeyGlitterCount(), count(Auth::user()->glitters));
 
         return Redirect::back();
     }
@@ -123,7 +123,7 @@ class GlitterController extends Controller
         $glitter->save();
 
         $this->storeHashtags($glitter->content, $glitter);
-        Redis::set(Auth::user()->getRedisKeyGlitters(), count(Auth::user()->glitters));
+        Redis::set(Auth::user()->getRedisKeyGlitterCount(), count(Auth::user()->glitters));
 
         return Redirect::back();
 	}

@@ -133,7 +133,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getNumberOfGlitters()
     {
-        return Redis::get($this->getRedisKeyGlitters()) ? Redis::get($this->getRedisKeyGlitters()) : 0;
+        return Redis::get($this->getRedisKeyGlitterCount()) ? Redis::get($this->getRedisKeyGlitterCount()) : 0;
     }
 
     public function getRedisKeyFollowing()

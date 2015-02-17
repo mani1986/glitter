@@ -41,7 +41,7 @@ class GlitterTableSeeder extends Seeder
             [
                 'user' => 3,
                 'content' => 'Never going home #lol',
-                'reglitter' => 7
+                'reglitter' => 6
             ]
         ];
 

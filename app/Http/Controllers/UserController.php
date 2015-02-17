@@ -24,7 +24,7 @@ class UserController extends Controller
         if (Auth::check()) {
             return view('user-self', ['user' => User::find(Auth::id())]);
         } else {
-            return redirect('/h');
+            return redirect('/g');
         }
 	}
 

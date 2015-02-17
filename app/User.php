@@ -62,7 +62,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('Glitter\Glitter', 'user')
             ->orWhereIn('user', $this->getFollowersIds())
-            ->orderBy('id', 'DESC');
+            ->orderBy('created_at', 'DESC');
     }
 
     /**

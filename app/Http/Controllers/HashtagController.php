@@ -44,7 +44,7 @@ class HashtagController extends Controller
      */
     public function getByHashtag($hashtag)
     {
-        $hashtags = Hashtag::hashtag($hashtag)->orderBy('id', 'DESC')->get();
+        $hashtags = Hashtag::hashtag($hashtag)->orderBy('created_at', 'DESC')->get();
 
         return view('hashtag-single', ['hashtags' => $hashtags, 'name' => strtolower($hashtag)]);
     }

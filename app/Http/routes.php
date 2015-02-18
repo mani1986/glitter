@@ -29,6 +29,7 @@ Route::get('h/{name}', 'HashtagController@getByHashtag');
 Route::get('g', 'GlitterController@index');
 Route::post('g/new', ['middleware' => 'auth', 'uses' => 'GlitterController@store']);
 Route::get('g/{id}/reglitter', 'GlitterController@reglitter');
+Route::get('g/{id}/delete', 'GlitterController@delete');
 
 // Search Route
 Route::get('search', 'SearchController@index');
@@ -39,3 +40,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+Route::any('{all}', 'GlitterController@fallback');

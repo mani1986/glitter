@@ -1,6 +1,7 @@
 <?php namespace Glitter\Services;
 
 use Glitter\User;
+use Illuminate\Support\Facades\Redis;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
@@ -30,6 +31,7 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
+        Redis::set($data['username'] . ':exists', true);
 		return User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
@@ -37,8 +39,6 @@ class Registrar implements RegistrarContract {
             'username' => $data['username'],
             'avatar' => $this->getAvatar()
 		]);
-
-        Redis::set($data['username'] . ':exists', true);
 	}
 
     /**

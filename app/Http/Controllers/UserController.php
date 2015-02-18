@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Redis;
  */
 class UserController extends Controller
 {
-
 	/**
 	 * Display a listing of the resource.
 	 *

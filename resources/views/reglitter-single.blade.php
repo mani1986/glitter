@@ -8,4 +8,7 @@
         <a href="/u/{{$glitter->reglitter_link->author->username}}">{{$glitter->reglitter_link->author->name}}</a> <small>{{'@' . $glitter->reglitter_link->author->username}} - {{$glitter->reglitter_link->created_at}}</small>
     </h3>
     <p>{!!$glitter->reglitter_link->getParsedContent()!!}</p>
+    @if (Auth::check() && $glitter->author->id === Auth::id())
+        <p><a href="/g/{{$glitter->id}}/delete">Delete</a></p>
+    @endif
 </li>

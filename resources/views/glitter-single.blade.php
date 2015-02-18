@@ -8,6 +8,9 @@
     @if (Auth::check() && $glitter->author->id !== Auth::id())
         <p><a href="/g/{{$glitter->id}}/reglitter">Reglitter</a></p>
     @endif
+    @if (Auth::check() && $glitter->author->id === Auth::id())
+        <p><a href="/g/{{$glitter->id}}/delete">Delete</a></p>
+    @endif
 </li>
 @else
     @include('reglitter-single')

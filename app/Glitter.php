@@ -3,7 +3,6 @@ namespace Glitter;
 
 use Glitter\Http\Controllers\HashtagController;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 
 /**

@@ -39,7 +39,7 @@ class GlitterController extends Controller
         $parentGlitter = Glitter::find($id);
         $previousReglitter = Glitter::whereRaw('reglitter = ? AND user = ?', [$id, Auth::id()])->get();
 
-        if (!$parentGlitter || $previousReglitter || $parentGlitter->author->id === Auth::id()) {
+        if (!$parentGlitter || $previousReglitter->getDictionary() || $parentGlitter->author->id === Auth::id()) {
             return redirect('/');
         }
 
@@ -62,6 +62,29 @@ class GlitterController extends Controller
         return view('user-self', ['user' => User::find(Auth::id()), 'glitters' => Glitter::all()]);
 	}
 
+    /**
+     * Delete a single glitter.
+     *
+     * @return Response
+     */
+    public function delete($id)
+    {
+        $glitter = Glitter::find($id);
+
+        if ($glitter && $glitter->user == Auth::id()) {
+            Glitter::destroy($id);
+
+            // Make reglitters just a normal glitter.
+            $reglitters = Glitter::where('reglitter', $id)->get();
+            foreach ($reglitters as $reglitter) {
+                $reglitter->reglitter = null;
+                $reglitter->save();
+            }
+        }
+
+        return Redirect::back();
+    }
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -76,4 +99,12 @@ class GlitterController extends Controller
 
         return Redirect::back();
 	}
+
+    /**
+     * Fallback route
+     */
+    public function fallback()
+    {
+        return view('error', ['message' => 'Page not found']);
+    }
 }

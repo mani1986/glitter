@@ -37,8 +37,9 @@ class GlitterController extends Controller
     public function reglitter($id)
     {
         $parentGlitter = Glitter::find($id);
+        $previousReglitter = Glitter::whereRaw('reglitter = ? AND user = ?', [$id, Auth::id()])->get();
 
-        if (!$parentGlitter || $parentGlitter->author->id === Auth::id()) {
+        if (!$parentGlitter || $previousReglitter || $parentGlitter->author->id === Auth::id()) {
             return redirect('/');
         }
 

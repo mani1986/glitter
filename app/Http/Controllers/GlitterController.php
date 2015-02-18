@@ -38,7 +38,7 @@ class GlitterController extends Controller
     {
         $parentGlitter = Glitter::find($id);
 
-        if (!$parentGlitter) {
+        if (!$parentGlitter || $parentGlitter->author->id === Auth::id()) {
             return redirect('/');
         }
 
